@@ -1,0 +1,172 @@
+﻿@model BookingRequestDto
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-primary">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Hotel Booking</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateNewBooking" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Hotel Branch</label>
+                            <select asp-for="HotelBranchId" class="form-select" required>
+                                <option value="">Choose a Hotel...</option>
+                                @foreach (var hotel in ViewBag.HotelBranches)
+                                {
+                                    <option value="@hotel.Id">@hotel.Name - @hotel.City</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Check-In Date</label>
+                                <input type="date" asp-for="CheckInDate" class="form-control" required />
+                                <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Check-Out Date</label>
+                                <input type="date" asp-for="CheckOutDate" class="form-control" required />
+                                <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+                        <h5>Room Selection</h5>
+
+                        <!-- First Room -->
+                        <div class="mb-3">
+                            <label class="form-label">First Room Type</label>
+                            <select asp-for="FirstRoom.RoomType" class="form-select room-type" id="FirstRoomType">
+                                <option value="Single">Single</option>
+                                <option value="Double">Double</option>
+                                <option value="Suite">Suite</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Adults</label>
+                                <input type="number" asp-for="FirstRoom.NoOfAdults" class="form-control room-adults" id="FirstRoomAdults" min="1" max="1" required />
+                                <span asp-validation-for="FirstRoom.NoOfAdults" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Children</label>
+                                <input type="number" asp-for="FirstRoom.NoOfChildren" class="form-control room-children" id="FirstRoomChildren" min="0" max="1" required />
+                                <span asp-validation-for="FirstRoom.NoOfChildren" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Second Room -->
+                        <div class="mb-3">
+                            <label class="form-label">Second Room (Optional)</label>
+                            <select asp-for="SecondRoom.RoomType" class="form-select room-type" id="SecondRoomType">
+                                <option value="None">None</option>
+                                <option value="Single">Single</option>
+                                <option value="Double">Double</option>
+                                <option value="Suite">Suite</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Adults</label>
+                                <input type="number" asp-for="SecondRoom.NoOfAdults" class="form-control room-adults" value="0" id="SecondRoomAdults" min="0" max="2" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Children</label>
+                                <input type="number" asp-for="SecondRoom.NoOfChildren" class="form-control room-children" value="0" id="SecondRoomChildren" min="0" max="2" />
+                            </div>
+                        </div>
+
+                        <!-- Third Room -->
+                        <div class="mb-3">
+                            <label class="form-label">Third Room (Optional)</label>
+                            <select asp-for="ThirdRoom.RoomType" class="form-select room-type" id="ThirdRoomType">
+                                <option value="None">None</option>
+                                <option value="Single">Single</option>
+                                <option value="Double">Double</option>
+                                <option value="Suite">Suite</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Adults</label>
+                                <input type="number" asp-for="ThirdRoom.NoOfAdults" class="form-control room-adults" id="ThirdRoomAdults" value="0" min="0" max="4" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Children</label>
+                                <input type="number" asp-for="ThirdRoom.NoOfChildren" class="form-control room-children" id="ThirdRoomChildren" value="0" min="0" max="4" />
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+                        <h5>Customer Details</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">National ID</label>
+                            <input type="number" asp-for="customerRequest.NationalId" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" asp-for="customerRequest.Name" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" asp-for="customerRequest.PhoneNumber" class="form-control" required />
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-center">
+                            <input type="submit" class="btn btn-warning fw-bold px-4 py-2 shadow" value="Go To Summary" />
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary fw-bold px-4 py-2 shadow">
+                                Back to Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function updateRoomOccupancy(roomTypeId, adultsId, childrenId) {
+            let roomType = document.getElementById(roomTypeId);
+            let adultsInput = document.getElementById(adultsId);
+            let childrenInput = document.getElementById(childrenId);
+
+            roomType.addEventListener("change", function () {
+                if (this.value === "Single")
+                {
+                    adultsInput.value = 1;
+                    childrenInput.value = 1;
+                    adultsInput.setAttribute("max", "1");
+                    childrenInput.setAttribute("max", "1");
+                }
+                else if(this.value === "Double")
+                {
+                    adultsInput.value = 1;
+                    childrenInput.value = 0;
+                    adultsInput.setAttribute("max", "2");
+                    childrenInput.setAttribute("max", "2");
+                }
+                else
+                {
+                    adultsInput.value = 1;
+                    childrenInput.value = 0;
+                    adultsInput.setAttribute("max", "4");
+                    childrenInput.setAttribute("max", "4");
+                }
+            });
+        }
+
+        updateRoomOccupancy("FirstRoomType", "FirstRoomAdults", "FirstRoomChildren");
+        updateRoomOccupancy("SecondRoomType", "SecondRoomAdults", "SecondRoomChildren");
+        updateRoomOccupancy("ThirdRoomType", "ThirdRoomAdults", "ThirdRoomChildren");
+    </script>
+}

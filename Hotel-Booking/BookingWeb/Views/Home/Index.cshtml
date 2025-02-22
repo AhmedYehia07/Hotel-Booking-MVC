@@ -1,0 +1,69 @@
+﻿@model List<HotelBranch>
+
+<div class="position-relative">
+    <img class="d-block w-100" src="@Url.Content("~/Images/Home/slide2.jpg")" alt="Hotel Image">
+
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+        <a asp-controller="Booking" asp-action="CreateNewBooking" class="btn btn-lg btn-warning fw-bold px-4 py-2 shadow-lg">
+            BOOK NOW
+        </a>
+    </div>
+
+    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4 text-center">
+        <a href="#branches" class="text-white text-decoration-none d-flex flex-column align-items-center hover-bounce">
+            <span class="fs-4 fw-bold">Go To Branches</span>
+            <i class="bi bi-chevron-down display-4"></i>
+        </a>
+    </div>
+
+</div>
+
+
+<div id="branches" class="container mt-4">
+    <div class="text-center">
+        <h1 class="text-center bg-primary text-white p-4 rounded shadow-lg d-inline-block display-4">
+            Hotel Branches
+        </h1>
+    </div>
+
+    <div class="row g-4 mt-4">
+        @foreach (var branch in Model)
+        {
+            <div class="col-md-6">
+                <div class="card border-primary shadow-lg">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="@Url.Content(branch.ImageUrl)" class="img-fluid rounded-start h-100" alt="@branch.Name">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning fw-bold">@branch.Name</h5>
+                                <p class="text-muted">Location: @branch.City</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    @{
+                                        var price = branch.HotelRooms.Count > 1 ? branch.HotelRooms[1].PricePerNight : 0;
+                                    }
+                                    <span class="text-warning fw-bold">
+                                        Starts from: USD
+                                        <span class="border-bottom border-warning">
+                                            @(price.ToString("c"))
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="container text-center mt-5 mb-4">
+    <a asp-controller="Booking" asp-action="CreateNewBooking" class="btn btn-lg btn-danger fw-bold px-5 py-3 shadow-lg">
+        BOOK NOW
+    </a>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">

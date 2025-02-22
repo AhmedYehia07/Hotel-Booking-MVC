@@ -1,0 +1,75 @@
+﻿@model BookingDetailsDto
+
+@{
+    ViewData["Title"] = "Booking Summary";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-primary">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>Booking Summary</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Hotel Branch</th>
+                        <td>@Model.HotelBranch</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Name</th>
+                        <td>@Model.Name</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">National ID</th>
+                        <td>@Model.NationalId</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Phone Number</th>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Check-In</th>
+                        <td>@Model.CheckInDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Check-Out</th>
+                        <td>@Model.CheckOutDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Reservation Date</th>
+                        <td>@Model.ReservationDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Number of Rooms</th>
+                        <td>@Model.NoOfRooms</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light" style="width: 30%;">Status</th>
+                        <td>@Model.status</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light text-danger" style="width: 30%;">Total Price</th>
+                        <td class="fw-bold text-danger">USD @Model.TotalPrice?.ToString("F2")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.status == "pending")
+        {
+            <div class="card-footer text-center">
+                <div class="d-flex gap-2 justify-content-center">
+                    <form asp-controller="Booking" asp-action="ConfirmBooking" method="post">
+                        <input hidden asp-for="DetailsId" />
+                        <input type="submit" class="btn btn-warning fw-bold px-4 py-2 shadow" value="Confirm Booking" />
+                    </form>
+                    <form asp-controller="Booking" asp-action="CancelBooking" method="post">
+                        <input hidden asp-for="DetailsId" />
+                        <input type="submit" class="btn btn-danger fw-bold px-4 py-2 shadow" value="Cancel Booking" />
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

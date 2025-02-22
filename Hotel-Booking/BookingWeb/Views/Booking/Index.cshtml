@@ -1,0 +1,46 @@
+﻿@model List<BookingListDto>
+
+@{
+    ViewData["Title"] = "Booking List";
+}
+
+<h2 class="text-center my-4">Booking List</h2>
+<div class="container">
+    <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Customer Name</th>
+            <th>Branch</th>
+            <th>Reservation Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.DetailId</td>
+                    <td>@booking.CutomerName</td>
+                    <td>@booking.Branch</td>
+                    <td>@booking.ReservationDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="text-center">
+                        <a asp-action="Summary" asp-controller="Booking" asp-route-detailsId="@booking.DetailId" class="btn btn-info">
+                            Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">No bookings found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
